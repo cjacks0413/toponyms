@@ -1,47 +1,48 @@
 # -*- coding: UTF-8 -*-
-# normalize.py 
-# normalizes and denormalizes Arabic text 
-# takes in a File, returns a File. 
-# libraries: RE (Regular Expression), 
+# normalize.py
+# normalizes and denormalizes Arabic text
+# takes in a File, returns a File.
+# libraries: RE (Regular Expression),
 
-import re, join 
+import re
+from os.path import join 
 
 # ------------------------------------------------------------------
-# EXPORTED FUNCTIONS 
+# EXPORTED FUNCTIONS
 # ------------------------------------------------------------------
 
-# toRawText: 
+# toRawText:
 # converts classical Arabic to raw text
 def toRawText(text):
     text = re.sub(u"[0-9*#|؟.$,;:/<>a-zA-Z()%،؛~»«]|\]|\[|_|-|=|\}|\{", " ", text)
     text = re.sub('( ){2,}', ' ', text)
     text = deNoise(text)
     text = normalizeArabic(text)
-    return text 
+    return text
 
-# normalizeAndConcatenate: 
-# converts classical Arabic to raw text and concatenates into one string. 
-def normalizeAndConcatenate(text): 
-	text = toRawText(text)
+# normalizeAndConcatenate:
+# converts classical Arabic to raw text and concatenates into one string.
+def normalizeAndConcatenate(text):
+    text = toRawText(text)
     text = "|".join(text )
 
 
 # ------------------------------------------------------------------
-# INTERNAL FUNCTIONS 
+# INTERNAL FUNCTIONS
 # ------------------------------------------------------------------
 
-# cleanText: 
-# delete multiple spaces and multiple new lines. 
-def cleanText(textBlocks):
-    textBlocks = re.sub('(?<=\n)( ){2,}', ' ', textBlocks)  
-    textBlocks = re.sub('(\n){2,}', '\n\n', textBlocks) 
-    textBlocks = re.sub("\n ", "\n  ", textBlocks)
+# cleanText:
+# delete multiple spaces and multiple new lines.
+def _cleanText(textBlocks):
+    textBlocks = re.sub('(?<=\n)( ){2,}', ' ', textBlocks)
+    textBlocks = re.sub('(\n){2,}', '\n\n', textBlocks)
+    textBlocks = re.sub("\n ", "\n ", textBlocks)
     return textBlocks
 
-# normalizeArabic: 
+# normalizeArabic:
 # standardizes Classical Arabic removing variation among leters
-# must be undone using denormalize before search 
-def normalizeArabic(text):
+# must be undone using denormalize before search
+def _normalizeArabic(text):
     text = re.sub("[إأٱآا]", "ا", text)
     text = re.sub("ى", "ي", text)
     text = re.sub("(ؤ)", "و", text)
@@ -50,25 +51,26 @@ def normalizeArabic(text):
     return text
 
 # deNoise(text) deletes noise characters from Arabic text
-def deNoise(text):
-    noise = re.compile(""" ّ    | # Tashdid
-                             َ    | # Fatha
-                             ً    | # Tanwin Fath
-                             ُ    | # Damma
-                             ٌ    | # Tanwin Damm
-                             ِ    | # Kasra
-                             ٍ    | # Tanwin Kasr
-                             ْ    | # Sukun
-                             ـ     # Tatwil/Kashida
-                         """, re.VERBOSE)
-    text = re.sub(noise, '', text)
+def _deNoise(text):
+    noise = re.compile(""" ّ | # Tashdid
+                            َ | # Fatha
+                            ً | # Tanwin Fath
+                            ُ | # Damma
+                            ٌ | # Tanwin Damm
+                            ِ | # Kasra
+                            ٍ | # Tanwin Kasr
+                            ْ | # Sukun
+                            ـ # Tatwil/Kashida
+                            """, re.VERBOSE)
+    text = noise.sub('', text)
+    #text = re.sub(noise, '', text)
     return text
 
-# deNormalizeArabic: 
-# deNormalizes normalized text by adding: 
-# array of variations to each potentially normalized character 
-# use during which phase?? 
-def deNormalize(text):
+# deNormalizeArabic:
+# deNormalizes normalized text by adding:
+# array of variations to each potentially normalized character
+# use during which phase??
+def _deNormalize(text):
     text = re.sub('[إأٱآا]', '[إأٱآا]', text)
     text = re.sub('(ي|ى)\\b', '[يى]', text) # HEAVY '[إأٱآايى]'
     #text = re.sub('ة', '[هة]', text)

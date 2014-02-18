@@ -1,16 +1,15 @@
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
-#!/usr/bin/env python
 
 # a working main to add on to as we complete each step in the process
 # will eventually be removed 
 
-import sys, norm, re 
 
-# currently not functional, I'm getting strange character results. 
-# possbiliities: issues with ascii encoding/python version/missign something
-# in normalize. 
+# NLTK ISRI Stemmer example on sample text. Could replace entire norm.py. 
+from nltk.stem.isri import ISRIStemmer
 
-text = open("../assets/arabic_sources/DhahabiSAN.txt", 'r')
-for line in text:
-		my_line = norm.rawText(line)
-text.close() 
+text = open("sample.txt")
+stemmer = ISRIStemmer()
+for line in text: 
+	my_line = stemmer.stem(line) 
+	print (my_line) 
