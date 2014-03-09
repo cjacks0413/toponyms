@@ -14,10 +14,11 @@ from os.path import join
 # toRawText:
 # converts classical Arabic to raw text
 def toRawText(text):
-    text = re.sub(u"[0-9*#|؟.$,;:/<>a-zA-Z()%،؛~»«]|\]|\[|_|-|=|\}|\{", " ", text)
-    text = re.sub('( ){2,}', ' ', text)
-    text = deNoise(text)
-    text = normalizeArabic(text)
+    englishChars = re.compile(u"[0-9*#|؟.$,;:/<>a-zA-Z()%،؛~»«]|\]|\[|_|-|=|\}|\{")
+    extraSpaces = re.compile('( ){2,}')
+    text = re.sub(englishChars, " ", text)
+    text = re.sub(extraSpaces, ' ', text)
+    text = _deNoise(text)
     return text
 
 # normalizeAndConcatenate:
