@@ -7,10 +7,6 @@
 import re
 from os.path import join 
 
-# ------------------------------------------------------------------
-# EXPORTED FUNCTIONS
-# ------------------------------------------------------------------
-
 # toRawText:
 # converts classical Arabic to raw text
 def toRawText(text):
@@ -26,11 +22,6 @@ def toRawText(text):
 def normalizeAndConcatenate(text):
     text = toRawText(text)
     text = "|".join(text )
-
-
-# ------------------------------------------------------------------
-# INTERNAL FUNCTIONS
-# ------------------------------------------------------------------
 
 # cleanText:
 # delete multiple spaces and multiple new lines.

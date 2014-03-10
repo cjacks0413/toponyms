@@ -5,21 +5,9 @@
 import re, norm, sys, os.path 
 
 topTag = re.compile(r'(?<=#TOP).*')
-# topAndNisba = re.compile(r'(?<=#TOP).*(?=#NISBA)') 
-# nisba = re.compile(r'(?<=#NISBA).*')
-
-# # test = re.findall(topOnly, text.read())
-# # for i in test: 
-# # 	#print (i)
-# # 	foo = i.split('#')[1]
-# # 	print (foo)
-
-# print (test)
-# print (topList)
-# print (len(topList))
 
 topList = ""
-for filename in os.listdir("../MB"): 
+for filename in os.listdir(sys.argv[1]): 
 	if filename.endswith(".alpha"): 
 		text = open("../MB/" + filename, "r", encoding='utf-8')
 		matches = re.findall(topTag, text.read()) 
