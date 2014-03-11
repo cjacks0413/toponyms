@@ -62,7 +62,7 @@ def _deNoise(text):
 # deNormalizes normalized text by adding:
 # array of variations to each potentially normalized character
 # use during which phase??
-def _deNormalize(text):
+def deNormalize(text):
     text = re.sub('[إأٱآا]', '[إأٱآا]', text)
     text = re.sub('(ي|ى)\\b', '[يى]', text) # HEAVY '[إأٱآايى]'
     #text = re.sub('ة', '[هة]', text)
